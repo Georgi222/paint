@@ -1,0 +1,221 @@
+package test;
+
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
+public class paint extends JPanel {
+	private static final Color NULL = null;
+	public static int[] x = new int[1000];
+	public static int[] y = new int[1000];
+	public static int[] br = new int[1000];
+	public static int[][][][] matrix = new int[50][50][50][50];//x,y,ris,color
+	
+	public static int color;
+	public static int yy;
+	public static int xx;
+	public static int ris;
+	public static int bri=0;
+
+	public static int a = 10;
+	public static int b = 10;
+	
+	private BufferedImage canvas;
+
+	public paint(int width, int height) {
+		
+		canvas = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+
+		// fillCanvas(Color.BLUE);
+
+		//System.out.println(xx + " " + yy);
+		for (int i = 0; i < br[bri]; i++) {
+
+			while (y[i] % 20 != 0) {
+				y[i]--;
+			}
+			while (x[i] % 20 != 0) {
+				x[i]--;
+			}
+
+			drawRect(col(x[i],y[i]), x[i], y[i], 20, 20);
+			System.out.println(x[i]/20 + " " +  y[i]/20);
+		//	matrix[x[i]][y[i]][ris(x[i],y[i],ris)][br]=1;
+		//	matrix[x[i]][y[i]][ris(x[i],y[i],ris)]=1;
+		}
+		
+		
+		
+		
+		
+		
+		
+		for (int i = 0; i < width - 1; i += 20) {
+			drawRect(Color.BLACK, i, 0, 1, height);
+		}
+		for (int i = 0; i < height - 1; i += 20) {
+			drawRect(Color.BLACK, 0, i, width, 1);
+		}
+
+	}
+
+	public Dimension getPreferredSize() {
+		return new Dimension(canvas.getWidth(), canvas.getHeight());
+	}
+
+	public void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		Graphics2D g2 = (Graphics2D) g;
+		g2.drawImage(canvas, null, null);
+	}
+
+	public void fillCanvas(Color c) {
+		int color = c.getRGB();
+		for (int x = 0; x < canvas.getWidth(); x++) {
+			for (int y = 0; y < canvas.getHeight(); y++) {
+				canvas.setRGB(x, y, color);
+			}
+		}
+		repaint();
+	}
+
+	public void drawLine(Color c, int x1, int y1, int x2, int y2) {
+		// Implement line drawing
+		repaint();
+	}
+
+	public void drawRect(Color c, int x1, int y1, int width, int height) {
+		int color = c.getRGB();
+		// Implement rectangle drawing
+		for (int x = x1; x < x1 + width; x++) {
+			for (int y = y1; y < y1 + height; y++) {
+				canvas.setRGB(x, y, color);
+			}
+		}
+		repaint();
+	}
+
+	public void drawOval(Color c, int x1, int y1, int width, int height) {
+		// Implement oval drawing
+		repaint();
+	}
+	
+	public int ris(int x, int y, int ris)
+	{
+		if(x/20==0&&y/20==0)
+		{
+			ris++;
+			bri++;
+			
+		}
+		if(x/20==0&&y/20==1)
+		{
+			ris--;
+			bri--;
+		}
+		return ris;
+	}
+	
+	public Color col(int x , int y)
+	{
+		
+		if(x/20==0&&y/20==2)
+		{
+			color=1;	
+		}
+		else if(x/20==0&&y/20==3)
+		{
+			color=2;	
+		}
+		else if(x/20==0&&y/20==4)
+		{
+			color=3;		
+		}
+		else if(x/20==0&&y/20==5)
+		{
+			color=4;		
+		}
+		else if(x/20==0&&y/20==6)
+		{
+			color=5;		
+		}
+		switch(color)
+		{
+		case 1:
+			return Color.BLUE;
+		case 2:
+			return Color.RED;
+		case 3:
+			return Color.ORANGE;
+		case 4:
+			return Color.GREEN;
+		case 5:
+			return Color.WHITE;
+		}
+		return NULL;
+		
+	}
+	
+	public static void main(String[] args) {
+
+		int width = 640;
+		int height = 480;
+		JFrame frame = new JFrame("Direct draw demo");
+
+		paint panel = new paint(width, height);
+
+		frame.add(panel);
+		frame.pack();
+		frame.setVisible(true);
+		frame.setResizable(true);
+
+		for (int i = 0; i < 1000; i++) {
+			x[i] = 0;
+		}
+		for (int i = 0; i < 1000; i++) {
+			y[i] = 0;
+		}
+	
+		panel.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+
+				x[br[bri]] = e.getX();
+				y[br[bri]] = e.getY();
+				// xx = e.getX();
+				// yy = e.getX();
+				// System.out.println(x[br]+" "+ y[br]);
+				// if(x[br]%20==0&&y[br]%20==0)
+				// {
+
+				// }
+				// else
+				// {
+				br[bri]++;
+
+				paint panel = new paint(width, height);
+
+				frame.add(panel);
+				frame.pack();
+				// }
+				// frame.setVisible(true);
+				// frame.setResizable(false);
+
+			}
+
+			private void t(int width, int height) {
+				// TODO Auto-generated method stub
+
+			}
+		});
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+	}
+
+}
